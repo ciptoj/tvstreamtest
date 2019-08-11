@@ -2,21 +2,30 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { UserController } from "./controller/userController";
+import { HomeController } from "./controller/HomeController";
 import * as bodyParser from "body-parser";
+import { User, IUser } from "./model/userModel";
+import mustacheExpress from "mustache-express";
 class App {
   public app: express.Application = express();
   public userController: UserController = new UserController();
+  public homeController: HomeController = new HomeController();
+  
   public mongoServer = new MongoMemoryServer();
 
   constructor(){
     this.startDB();
     this.startConfiguring();
     this.registerRoutes();
+    this.addInitialData();
     this.startListening();
   }
   private startConfiguring(){
     this.app.use(bodyParser.json()); // support json encoded bodies
     this.app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+    this.app.engine("html",mustacheExpress());
+    this.app.set("view engine","html");
+    this.app.set("views",__dirname+'/views');
   }
   private async startDB(){
     mongoose.Promise = Promise;
@@ -25,8 +34,7 @@ class App {
           // options for mongoose 4.11.3 and above
           autoReconnect: true,
           reconnectTries: Number.MAX_VALUE,
-          reconnectInterval: 1000,
-          useMongoClient: true, // remove this line if you use mongoose 5 and above
+          reconnectInterval: 1000
         };
 
         mongoose.connect(mongoUri, mongooseOpts);
@@ -47,10 +55,15 @@ class App {
   private registerRoutes(){
     this.app.route('/user')
     .post(this.userController.addNewUser);
-
+    this.app.route('/')
+    .get(this.homeController.Index);
   }
   private startListening(){
     this.app.listen(5001);
+  }
+  private addInitialData(){
+    let adminUser = new User({id:1,name:"admin",password:"admin"});
+    adminUser.save();
   }
 }
 

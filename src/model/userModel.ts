@@ -2,8 +2,9 @@
 import { Document,Schema, Model, model} from "mongoose";
 
 export interface IUser extends Document{
-    id:string,
-    name:string
+    id:Number,
+    name:String,
+    password:String
 }
 export const UserSchema: Schema = new Schema({
     id: {
@@ -13,6 +14,10 @@ export const UserSchema: Schema = new Schema({
     name: {
         type: String,
         required: 'Enter a user name'
+    },
+    password: {
+        type: String,
+        required: 'Enter a password'
     }
 });
 export const User: Model<IUser> = model<IUser>("User",UserSchema);
