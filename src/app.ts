@@ -3,14 +3,17 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { UserController } from "./controller/userController";
 import { HomeController } from "./controller/HomeController";
+import { AuthController } from "./controller/AuthController";
+
 import * as bodyParser from "body-parser";
 import { User, IUser } from "./model/userModel";
 import mustacheExpress from "mustache-express";
+import {checkAuth} from "./middleware/checkAuth";
 class App {
   public app: express.Application = express();
   public userController: UserController = new UserController();
   public homeController: HomeController = new HomeController();
-  
+  public authController: AuthController = new AuthController();
   public mongoServer = new MongoMemoryServer();
 
   constructor(){
@@ -26,6 +29,7 @@ class App {
     this.app.engine("html",mustacheExpress());
     this.app.set("view engine","html");
     this.app.set("views",__dirname+'/views');
+    this.app.use('/static',express.static('src/static'));
   }
   private async startDB(){
     mongoose.Promise = Promise;
@@ -56,7 +60,9 @@ class App {
     this.app.route('/user')
     .post(this.userController.addNewUser);
     this.app.route('/')
-    .get(this.homeController.Index);
+    .get(checkAuth, this.homeController.Index);
+    this.app.route('/login').get(this.authController.Login)
+    .post(this.authController.LoginPost);
   }
   private startListening(){
     this.app.listen(5001);

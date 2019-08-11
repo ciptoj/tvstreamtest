@@ -11,6 +11,7 @@ export const VideoRatingModel = new Schema({
     rate: {
         type: Number,
         required: 'Enter rating'
+        
 
     },
     userid: {

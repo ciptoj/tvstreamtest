@@ -6,8 +6,9 @@
   "scripts": {
     "test": "mocha",
     "build-ts": "tsc",
-    "copyviews":"copyfiles -u 1 src/views/**/*.html dist/",
-    "start": "tsc -p tsconfig.json && npm run copyviews && node dist/app.js"
+    "copyall":"copyfiles -u 1 src/views/**/*.html src/static/**/*.css dist/",
+    "start": "tsc -p tsconfig.json && npm run copyall && node dist/app.js",
+    "startwatch": "nodemon dist/app.js"
   },
   "author": "cipto",
   "license": "ISC",
@@ -30,5 +31,18 @@
     "copyfiles": "^2.1.1",
     "jest": "^24.8.0",
     "mongodb-memory-server": "^5.1.10"
-  }
+  },
+  "nodemonConfig": {
+    "ignore": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    ".git",
+    "node_modules"
+    ],
+    "watch": [
+    "src"
+    ],
+    "exec": "npm start",
+    "ext": "ts"
+    }
 }
