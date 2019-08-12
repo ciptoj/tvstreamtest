@@ -9,6 +9,7 @@ import * as bodyParser from "body-parser";
 import { User, IUser } from "./model/userModel";
 import mustacheExpress from "mustache-express";
 import {checkAuth} from "./middleware/checkAuth";
+import ExpressSession from "express-session";
 class App {
   public app: express.Application = express();
   public userController: UserController = new UserController();
@@ -30,6 +31,11 @@ class App {
     this.app.set("view engine","html");
     this.app.set("views",__dirname+'/views');
     this.app.use('/static',express.static('src/static'));
+    this.app.use(ExpressSession({
+      secret: 'i-love-husky',
+      resave: false,
+      saveUninitialized: true
+    }));
   }
   private async startDB(){
     mongoose.Promise = Promise;
