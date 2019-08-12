@@ -1,9 +1,19 @@
 //   /model/video.ts
-import * as mongoose from 'mongoose';
+import { Document,Schema, Model, model} from "mongoose";
 
-const Schema = mongoose.Schema;
+export interface IVideo extends Document{
+    id:Number,
+    type:String,
+    length:String,
+    name:String,
+    uploadedDateTime:Date,
+    videoCategoryID:Number,
+    numberOfWatch:Number
+}
 
-export const VideoModel = new Schema({
+
+
+export const VideoSchema = new Schema({
     id: {
         type: Number,
         required: 'Enter video id'
@@ -32,3 +42,4 @@ export const VideoModel = new Schema({
         type: Number
     }
 });
+export const Video: Model<IVideo> = model<IVideo>("Video",VideoSchema);

@@ -1,1 +1,25 @@
-<h3>Welcome</h3>
+<html>
+    <head>
+    </head>
+    <body>
+        <h3>Welcome to our TV Stream website</h3>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"/>
+        <script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+  <script>
+function viewModel(){
+    var self=this;
+    self.init=function(){
+        $.get('/video/getwatched',function(data){
+                
+        });
+    }
+}
+ko.applyBindings(new viewModel());
+  </script>
+        
+    </body>
+</html>
+

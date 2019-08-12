@@ -1,9 +1,11 @@
 //   /model/videoRating.ts
-import * as mongoose from 'mongoose';
-
-const Schema = mongoose.Schema;
-
-export const VideoRatingModel = new Schema({
+import { Document,Schema, Model, model} from "mongoose";
+export interface IVideoRating extends Document{
+    videoid:Number,
+    rate:Number,
+    userid:Number
+}
+export const VideoRatingSchema = new Schema({
     videoid: {
         type: Number,
         required: 'Enter video id'
@@ -11,7 +13,7 @@ export const VideoRatingModel = new Schema({
     rate: {
         type: Number,
         required: 'Enter rating'
-        
+
 
     },
     userid: {
@@ -19,3 +21,4 @@ export const VideoRatingModel = new Schema({
         required: 'Enter user id'
     },
 });
+export const VideoRating: Model<IVideoRating> = model<IVideoRating>("VideoRating",VideoRatingSchema);
