@@ -23,7 +23,7 @@
     "chalk": "^2.4.2",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
-    "mongoose": "^5.6.9",
+    "mongoose": "^5.7.5",
     "mustache": "^3.0.1",
     "mustache-express": "^1.2.8",
     "typescript": "^3.5.3"
